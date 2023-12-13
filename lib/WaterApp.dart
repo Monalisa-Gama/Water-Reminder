@@ -18,14 +18,17 @@ class WaterApp extends StatelessWidget {
 }
 
 class CheckFirstTimeScreen extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
       future: _checkFirstTime(),
+      
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (snapshot.hasData) {
           bool isFirstTime = snapshot.data!;
           if (isFirstTime) {
+            _updateFirstRun();
             return InitialInfoScreen(); // Redireciona para a tela inicial
           } else {
             return DrinkWaterScreen(); // Redireciona para a tela principal
@@ -43,8 +46,13 @@ class CheckFirstTimeScreen extends StatelessWidget {
 
   Future<bool> _checkFirstTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
+    bool isFirstTime = prefs.getBool('isFirstRun') ?? true;
 
     return isFirstTime;
+  }
+
+  _updateFirstRun() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isFirstRun', false);
   }
 }
