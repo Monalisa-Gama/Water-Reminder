@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:prototipo/HomePage.dart';
-import 'package:prototipo/InicialScreen.dart';
+import 'package:prototipo/homePage.dart';
+import 'package:prototipo/logIn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WaterApp extends StatelessWidget {
@@ -29,7 +29,7 @@ class CheckFirstTimeScreen extends StatelessWidget {
           bool isFirstTime = snapshot.data!;
           if (isFirstTime) {
             _updateFirstRun();
-            return InitialInfoScreen(); // Redireciona para a tela inicial
+            return LoginPage(); // Redireciona para a tela inicial
           } else {
             return DrinkWaterScreen(); // Redireciona para a tela principal
           }

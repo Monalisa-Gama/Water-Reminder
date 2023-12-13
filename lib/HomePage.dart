@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prototipo/data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DrinkWaterScreen extends StatefulWidget {
@@ -18,6 +19,7 @@ class _DrinkWaterScreenState extends State<DrinkWaterScreen> {
     _loadDailyWaterGoal();
   }
 
+
   Future<void> _loadDailyWaterGoal() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     double savedDailyWaterGoal = (prefs.getDouble('weight') ?? 0)*35;
@@ -28,13 +30,30 @@ class _DrinkWaterScreenState extends State<DrinkWaterScreen> {
   }
 
   void _drinkWater() {
+    _insereAgua(_waterPerCup);
     setState(() {
       _waterConsumed += _waterPerCup; // Aumenta a quantidade de água consumida
     });
   }
 
-  double _calculateWaterFraction() {
-    return _waterConsumed / _dailyWaterGoal;
+  void _insereAgua( int volume) async{
+    DatabaseProvider dbProvider = DatabaseProvider.db;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    dbProvider.insertAgua(volume, prefs.getInt('userId') ?? 0, DateTime.now());
+  }
+
+  Future<int> _calculaTotal() async{
+    DatabaseProvider dbProvider = DatabaseProvider.db;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return dbProvider.aguaDia(prefs.getInt('userId') ?? 0, DateTime.now());
+  }
+
+  Future<double> _calculateWaterFraction() async {
+    int total = await _calculaTotal();
+    print (total);
+    return ( total / _dailyWaterGoal);
+    //_waterConsumed
   }
 
   @override
@@ -59,15 +78,31 @@ class _DrinkWaterScreenState extends State<DrinkWaterScreen> {
             Stack(
               alignment: Alignment.center,
               children: <Widget>[
-                SizedBox(
-                  width: 200,
-                  height: 200,
-                  child: CircularProgressIndicator(
-                    value: _calculateWaterFraction(),
-                    backgroundColor: Colors.grey,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                    strokeWidth: 20,
-                  ),
+                FutureBuilder<double>(
+                  future: _calculateWaterFraction(),
+                  builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator(
+                        value: null,
+                        backgroundColor: Colors.grey,
+                        strokeWidth: 20,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('Erro: ${snapshot.error}');
+                    } else {
+                      return SizedBox(
+                        width: 200,
+                        height: 200,
+                        child: CircularProgressIndicator(
+                          value: snapshot.data,
+                          backgroundColor: Colors.grey,
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                          strokeWidth: 20,
+                        ),
+                      );
+                    }
+                  },
                 ),
                 MaterialButton(
                   onPressed: _drinkWater,
@@ -83,9 +118,27 @@ class _DrinkWaterScreenState extends State<DrinkWaterScreen> {
               ],
             ),
             SizedBox(height: 20),
-            Text(
-              'Consumido: $_waterConsumed ml',
-              style: TextStyle(fontSize: 20.0),
+            FutureBuilder<int>(
+              future: _calculaTotal(),
+              builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Text(
+                    'Consumido: Carregando...',
+                    style: TextStyle(fontSize: 20.0),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text(
+                    'Erro ao carregar a quantidade consumida: ${snapshot.error}',
+                    style: TextStyle(fontSize: 20.0),
+                  );
+                } else {
+                  int quantidadeConsumida = snapshot.data ?? 0;
+                  return Text(
+                    'Consumido: $quantidadeConsumida ml',
+                    style: TextStyle(fontSize: 20.0),
+                  );
+                }
+              },
             ),
             SizedBox(height: 10),
             Text(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prototipo/HomePage.dart';
+import 'package:prototipo/data.dart';
+import 'package:prototipo/homePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -14,11 +15,16 @@ class _InitialInfoScreenState extends State<InitialInfoScreen> {
   double? _weight;
 
   void _saveUserInfoAndNavigate() async {
+    DatabaseProvider dbProvider = DatabaseProvider.db; // Obtém a instância do DatabaseProvider
+
     // Salvar informações coletadas
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    
     await prefs.setString('gender', _selectedGender ?? '');
     await prefs.setDouble('height', _height ?? 0);
     await prefs.setDouble('weight', _weight ?? 0);
+    await dbProvider.adicionarPeso(prefs.getInt('userId') ?? 0, _weight);
+    
 
     // Após salvar, navegar para a próxima tela (tela principal)
     Navigator.pushReplacement(
