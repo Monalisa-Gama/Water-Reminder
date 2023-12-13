@@ -43,6 +43,7 @@ class _LoginPageState extends State<LoginPage> {
 
 
       print('autenticado');
+      _updateFirstRun();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => DrinkWaterScreen()),
@@ -57,6 +58,12 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  void _updateFirstRun() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isFirstRun', false);
+  }
+
+
   void _toSingIn() async { 
     Navigator.pushReplacement(
         context,
@@ -69,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Informações Iniciais',
+          'Log In',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.blue,
@@ -130,3 +137,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+

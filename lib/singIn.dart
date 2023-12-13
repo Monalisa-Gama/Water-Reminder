@@ -22,18 +22,27 @@ class CadastroScreen extends StatelessWidget {
     int? id = await dbProvider.buscarIdUsuario(_usernameController.text);
     print(id);
     await prefs.setInt('userId', id ?? 0);
-
+    _updateFirstRun();
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => InitialInfoScreen()),
       );
   }
 
+   void _updateFirstRun() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isFirstRun', false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cadastro'),
+        title: Text(
+          'Sing In',
+          style: TextStyle(color: Colors.white),
+        ),
+      backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),

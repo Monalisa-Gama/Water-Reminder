@@ -28,7 +28,6 @@ class CheckFirstTimeScreen extends StatelessWidget {
         if (snapshot.hasData) {
           bool isFirstTime = snapshot.data!;
           if (isFirstTime) {
-            _updateFirstRun();
             return LoginPage(); // Redireciona para a tela inicial
           } else {
             return DrinkWaterScreen(); // Redireciona para a tela principal
