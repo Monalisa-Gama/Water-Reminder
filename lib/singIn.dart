@@ -4,7 +4,7 @@ import 'package:prototipo/inicialScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-DatabaseProvider dbProvider = DatabaseProvider.db; // Obtém a instância do DatabaseProvider
+DatabaseProvider dbProvider = DatabaseProvider.db; 
 class CadastroScreen extends StatelessWidget {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -14,10 +14,7 @@ class CadastroScreen extends StatelessWidget {
     String username = _usernameController.text;
     String password = _passwordController.text;
 
-    // Aqui você tem os valores dos campos de texto, pode usá-los para o cadastro
-    // Por exemplo, você pode chamar suas funções para inserir no banco de dados aqui
 
-    // Exemplo:
     await dbProvider.inserirUsuario(username, password);
     int? id = await dbProvider.buscarIdUsuario(_usernameController.text);
     print(id);
@@ -50,7 +47,7 @@ class CadastroScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextField(
-              controller: _usernameController, // Associando o controlador ao campo de texto
+              controller: _usernameController, 
               decoration: InputDecoration(
                 labelText: 'Usuário',
                 border: OutlineInputBorder(),
@@ -58,7 +55,7 @@ class CadastroScreen extends StatelessWidget {
             ),
             SizedBox(height: 20.0),
             TextField(
-              controller: _passwordController, // Associando o controlador ao campo de texto
+              controller: _passwordController, 
               obscureText: true,
               decoration: InputDecoration(
                 labelText: 'Senha',
@@ -68,7 +65,7 @@ class CadastroScreen extends StatelessWidget {
             SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
-                _cadastrar(context); // Chama _cadastrar sem esperar um retorno
+                _cadastrar(context);
               },
               child: Text('Cadastrar'),
             ),

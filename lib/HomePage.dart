@@ -8,10 +8,9 @@ class DrinkWaterScreen extends StatefulWidget {
 }
 
 class _DrinkWaterScreenState extends State<DrinkWaterScreen> {
-  int _waterConsumed = 0; // Inicialmente, nenhum copo foi bebido
-  double _dailyWaterGoal = 2000; // Meta diária de consumo de água em copos
-  int _waterPerCup = 250; // Quantidade de água por copo
-
+  int _waterConsumed = 0; 
+  double _dailyWaterGoal = 2000;
+  int _waterPerCup = 250;
 
     @override
   void initState() {
@@ -32,7 +31,7 @@ class _DrinkWaterScreenState extends State<DrinkWaterScreen> {
   void _drinkWater() {
     _insereAgua(_waterPerCup);
     setState(() {
-      _waterConsumed += _waterPerCup; // Aumenta a quantidade de água consumida
+      _waterConsumed += _waterPerCup; 
     });
   }
 
@@ -53,7 +52,7 @@ class _DrinkWaterScreenState extends State<DrinkWaterScreen> {
     int total = await _calculaTotal();
     print (total);
     return ( total / _dailyWaterGoal);
-    //_waterConsumed
+  
   }
 
   @override
@@ -106,13 +105,13 @@ class _DrinkWaterScreenState extends State<DrinkWaterScreen> {
                 ),
                 MaterialButton(
                   onPressed: _drinkWater,
-                  elevation: 4, // Define a elevação do botão
-                  shape: CircleBorder(), // Define a forma como um círculo
-                  color: const Color.fromARGB(255, 140, 199, 247), // Cor do botão
+                  elevation: 4, 
+                  shape: CircleBorder(), 
+                  color: const Color.fromARGB(255, 140, 199, 247), 
                   padding: EdgeInsets.all(16),
                   child: Icon(
-                    Icons.local_drink, // Ícone de gota de água
-                    size: 40, // Tamanho do ícone
+                    Icons.local_drink,
+                    size: 40,
                   ),
                 ),
               ],
@@ -171,10 +170,7 @@ class _DrinkWaterScreenState extends State<DrinkWaterScreen> {
               ],
             ),
             SizedBox(height: 10),
-            /*ElevatedButton(
-              onPressed: _drinkWater,
-              child: Text('Beber $_waterPerCup copo(s)'),
-            ),*/
+            
           ],
         ),
       ),

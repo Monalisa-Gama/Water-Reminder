@@ -24,14 +24,13 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _initializeDatabaseProvider() async {
     _databaseProvider = DatabaseProvider.db;
-    await _databaseProvider.initDB(); // Inicialize o banco de dados aqui
+    await _databaseProvider.initDB(); 
   }
 
    void _login() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // ignore: unnecessary_null_comparison
     if (_databaseProvider == null) {
-      // Aguarda a inicialização do DatabaseProvider antes de fazer login
       await _initializeDatabaseProvider();
     }
 
@@ -50,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
       );
     } else {
       print('não autenticado');
-      // mandar para o cadastro
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => InitialInfoScreen()),
@@ -96,7 +95,6 @@ class _LoginPageState extends State<LoginPage> {
               controller: _usernameController,
               onChanged: (value) {
                 setState(() {
-                  // Não é necessário fazer nada aqui com os controladores
                   print("User: $value");
                 });
               },
@@ -109,10 +107,9 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 10),
             TextFormField(
               controller: _passwordController,
-              obscureText: true, // Para ocultar a senha
+              obscureText: true,
               onChanged: (value) {
                 setState(() {
-                  // Não é necessário fazer nada aqui com os controladores
                   print("Password: $value");
                 });
               },

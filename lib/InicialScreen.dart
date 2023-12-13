@@ -15,9 +15,9 @@ class _InitialInfoScreenState extends State<InitialInfoScreen> {
   double? _weight;
 
   void _saveUserInfoAndNavigate() async {
-    DatabaseProvider dbProvider = DatabaseProvider.db; // Obtém a instância do DatabaseProvider
+    DatabaseProvider dbProvider = DatabaseProvider.db;
 
-    // Salvar informações coletadas
+ 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     
     await prefs.setString('gender', _selectedGender ?? '');
@@ -26,7 +26,7 @@ class _InitialInfoScreenState extends State<InitialInfoScreen> {
     await dbProvider.adicionarPeso(prefs.getInt('userId') ?? 0, _weight);
     
 
-    // Após salvar, navegar para a próxima tela (tela principal)
+    
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => DrinkWaterScreen()),
